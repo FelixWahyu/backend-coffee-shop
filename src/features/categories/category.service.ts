@@ -1,6 +1,6 @@
-import { type CreateCategoryRequest, type CategoryResponse, toCategoryResponse, type UpdateCategoryRequest } from "../model/category.model";
+import { type CreateCategoryRequest, type CategoryResponse, toCategoryResponse, type UpdateCategoryRequest } from "./category.model";
 import { Validation } from "../../validation/validation";
-import { CategoryValidation } from "../category.validation";
+import { CategoryValidation } from "./category.validation";
 import { prismaClient } from "../../application/database";
 import { type User } from "@prisma/client";
 import { ResponseError } from "../../error/responseError";

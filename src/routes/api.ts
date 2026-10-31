@@ -4,14 +4,15 @@ import { UserController } from "../controllers/userController";
 import { ContactController } from "../controllers/contactController";
 import { AddressController } from "../controllers/addressController";
 // import { CategoryController } from "../categories/controllers/category.controller";
-import routerCategory from "../categories/category.route";
+import routerCategory from "../features/categories/category.route";
 import { ProductController } from "../controllers/productController";
 import { ReviewController } from "../controllers/reviewController";
 import { BlogController } from "../controllers/blogController";
 import { StatsController } from "../controllers/statsController";
 import { adminMiddleware } from "../middleware/adminMiddleware";
 import { upload } from "../middleware/uploadMiddleware";
-import { UploadImageController } from "../controllers/upload.controller";
+import { UploadImageController } from "../features/uploads/upload.controller";
+import routerUpload from "../features/uploads/upload.route";
 
 export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
@@ -43,7 +44,8 @@ apiRouter.get("/api/contacts/:contactId/addresses", AddressController.list);
 // apiRouter.put("/api/categories/:id", adminMiddleware, CategoryController.update);
 // apiRouter.delete("/api/categories/:id", adminMiddleware, CategoryController.delete);
 apiRouter.use("/api", routerCategory);
-apiRouter.post("/api/admin/upload", adminMiddleware, upload.single("image"), UploadImageController.create);
+// apiRouter.post("/api/admin/upload", adminMiddleware, upload.single("image"), UploadImageController.create);
+apiRouter.use("/api", routerUpload);
 
 // Product API
 apiRouter.post("/api/products", adminMiddleware, ProductController.create);

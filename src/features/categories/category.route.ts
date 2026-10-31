@@ -1,7 +1,7 @@
 import express from "express";
-import { CategoryController } from "./controllers/category.controller";
-import { authMiddleware } from "../middleware/authMiddleware";
-import { adminMiddleware } from "../middleware/adminMiddleware";
+import { CategoryController } from "./category.controller";
+import { authMiddleware } from "../../middleware/authMiddleware";
+import { adminMiddleware } from "../../middleware/adminMiddleware";
 
 const routerCategory = express.Router();
 

@@ -10,14 +10,13 @@ const userController_1 = require("../controllers/userController");
 const contactController_1 = require("../controllers/contactController");
 const addressController_1 = require("../controllers/addressController");
 // import { CategoryController } from "../categories/controllers/category.controller";
-const category_route_1 = __importDefault(require("../categories/category.route"));
+const category_route_1 = __importDefault(require("../features/categories/category.route"));
 const productController_1 = require("../controllers/productController");
 const reviewController_1 = require("../controllers/reviewController");
 const blogController_1 = require("../controllers/blogController");
 const statsController_1 = require("../controllers/statsController");
 const adminMiddleware_1 = require("../middleware/adminMiddleware");
-const uploadMiddleware_1 = require("../middleware/uploadMiddleware");
-const upload_controller_1 = require("../controllers/upload.controller");
+const upload_route_1 = __importDefault(require("../features/uploads/upload.route"));
 exports.apiRouter = express_1.default.Router();
 exports.apiRouter.use(authMiddleware_1.authMiddleware);
 // User API
@@ -44,7 +43,8 @@ exports.apiRouter.get("/api/contacts/:contactId/addresses", addressController_1.
 // apiRouter.put("/api/categories/:id", adminMiddleware, CategoryController.update);
 // apiRouter.delete("/api/categories/:id", adminMiddleware, CategoryController.delete);
 exports.apiRouter.use("/api", category_route_1.default);
-exports.apiRouter.post("/api/admin/upload", adminMiddleware_1.adminMiddleware, uploadMiddleware_1.upload.single("image"), upload_controller_1.UploadImageController.create);
+// apiRouter.post("/api/admin/upload", adminMiddleware, upload.single("image"), UploadImageController.create);
+exports.apiRouter.use("/api", upload_route_1.default);
 // Product API
 exports.apiRouter.post("/api/products", adminMiddleware_1.adminMiddleware, productController_1.ProductController.create);
 exports.apiRouter.get("/api/products", productController_1.ProductController.list);

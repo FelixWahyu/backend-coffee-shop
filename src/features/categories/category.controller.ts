@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { CategoryService } from "../services/category.service";
-import { type CreateCategoryRequest, type UpdateCategoryRequest } from "../model/category.model";
+import { CategoryService } from "./category.service";
+import { type CreateCategoryRequest, type UpdateCategoryRequest } from "./category.model";
 
 export class CategoryController {
   static async create(req: Request, res: Response, next: NextFunction) {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ImageService } from "../services/image.service";
+import { ImageService } from "./image.service";
 // import { CreateImageRequest } from "../model/imageModel";
 
 export class ImageController {

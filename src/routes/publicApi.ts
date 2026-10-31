@@ -1,9 +1,9 @@
 import express from "express";
 import { UserController } from "../controllers/userController";
 import { ProductController } from "../controllers/productController";
-import { CategoryController } from "../categories/controllers/category.controller";
+import { CategoryController } from "../features/categories/category.controller";
 import { ReviewController } from "../controllers/reviewController";
-import { ImageController } from "../controllers/imageController";
+import { ImageController } from "../features/uploads/image.controller";
 import { BlogController } from "../controllers/blogController";
 import { upload } from "../middleware/uploadMiddleware";
 
