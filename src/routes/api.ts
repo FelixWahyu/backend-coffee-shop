@@ -3,7 +3,8 @@ import { authMiddleware } from "../middleware/authMiddleware";
 import { UserController } from "../controllers/userController";
 import { ContactController } from "../controllers/contactController";
 import { AddressController } from "../controllers/addressController";
-import { CategoryController } from "../controllers/categoryController";
+// import { CategoryController } from "../categories/controllers/category.controller";
+import routerCategory from "../categories/category.route";
 import { ProductController } from "../controllers/productController";
 import { ReviewController } from "../controllers/reviewController";
 import { BlogController } from "../controllers/blogController";
@@ -36,11 +37,12 @@ apiRouter.delete("/api/contacts/:contactId/addresses/:addressId", AddressControl
 apiRouter.get("/api/contacts/:contactId/addresses", AddressController.list);
 
 // Category API
-apiRouter.post("/api/categories", adminMiddleware, CategoryController.create);
-apiRouter.get("/api/categories", CategoryController.list);
-apiRouter.get("/api/categories/edit/:id", adminMiddleware, CategoryController.edit);
-apiRouter.put("/api/categories/:id", adminMiddleware, CategoryController.update);
-apiRouter.delete("/api/categories/:id", adminMiddleware, CategoryController.delete);
+// apiRouter.post("/api/categories", adminMiddleware, CategoryController.create);
+// apiRouter.get("/api/categories", CategoryController.list);
+// apiRouter.get("/api/categories/edit/:id", adminMiddleware, CategoryController.edit);
+// apiRouter.put("/api/categories/:id", adminMiddleware, CategoryController.update);
+// apiRouter.delete("/api/categories/:id", adminMiddleware, CategoryController.delete);
+apiRouter.use("/api", routerCategory);
 apiRouter.post("/api/admin/upload", adminMiddleware, upload.single("image"), UploadImageController.create);
 
 // Product API

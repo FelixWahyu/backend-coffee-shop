@@ -9,7 +9,8 @@ const authMiddleware_1 = require("../middleware/authMiddleware");
 const userController_1 = require("../controllers/userController");
 const contactController_1 = require("../controllers/contactController");
 const addressController_1 = require("../controllers/addressController");
-const categoryController_1 = require("../controllers/categoryController");
+// import { CategoryController } from "../categories/controllers/category.controller";
+const category_route_1 = __importDefault(require("../categories/category.route"));
 const productController_1 = require("../controllers/productController");
 const reviewController_1 = require("../controllers/reviewController");
 const blogController_1 = require("../controllers/blogController");
@@ -37,11 +38,12 @@ exports.apiRouter.put("/api/contacts/:contactId/addresses/:addressId", addressCo
 exports.apiRouter.delete("/api/contacts/:contactId/addresses/:addressId", addressController_1.AddressController.delete);
 exports.apiRouter.get("/api/contacts/:contactId/addresses", addressController_1.AddressController.list);
 // Category API
-exports.apiRouter.post("/api/categories", adminMiddleware_1.adminMiddleware, categoryController_1.CategoryController.create);
-exports.apiRouter.get("/api/categories", categoryController_1.CategoryController.list);
-exports.apiRouter.get("/api/categories/edit/:id", adminMiddleware_1.adminMiddleware, categoryController_1.CategoryController.edit);
-exports.apiRouter.put("/api/categories/:id", adminMiddleware_1.adminMiddleware, categoryController_1.CategoryController.update);
-exports.apiRouter.delete("/api/categories/:id", adminMiddleware_1.adminMiddleware, categoryController_1.CategoryController.delete);
+// apiRouter.post("/api/categories", adminMiddleware, CategoryController.create);
+// apiRouter.get("/api/categories", CategoryController.list);
+// apiRouter.get("/api/categories/edit/:id", adminMiddleware, CategoryController.edit);
+// apiRouter.put("/api/categories/:id", adminMiddleware, CategoryController.update);
+// apiRouter.delete("/api/categories/:id", adminMiddleware, CategoryController.delete);
+exports.apiRouter.use("/api", category_route_1.default);
 exports.apiRouter.post("/api/admin/upload", adminMiddleware_1.adminMiddleware, uploadMiddleware_1.upload.single("image"), upload_controller_1.UploadImageController.create);
 // Product API
 exports.apiRouter.post("/api/products", adminMiddleware_1.adminMiddleware, productController_1.ProductController.create);

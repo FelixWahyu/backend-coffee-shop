@@ -1,7 +1,7 @@
 import express from "express";
 import { UserController } from "../controllers/userController";
 import { ProductController } from "../controllers/productController";
-import { CategoryController } from "../controllers/categoryController";
+import { CategoryController } from "../categories/controllers/category.controller";
 import { ReviewController } from "../controllers/reviewController";
 import { ImageController } from "../controllers/imageController";
 import { BlogController } from "../controllers/blogController";

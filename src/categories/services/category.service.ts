@@ -1,10 +1,10 @@
-import { type CreateCategoryRequest, type CategoryResponse, toCategoryResponse, type UpdateCategoryRequest } from "../model/categoryModel";
-import { Validation } from "../validation/validation";
-import { CategoryValidation } from "../validation/categoryValidation";
-import { prismaClient } from "../application/database";
+import { type CreateCategoryRequest, type CategoryResponse, toCategoryResponse, type UpdateCategoryRequest } from "../model/category.model";
+import { Validation } from "../../validation/validation";
+import { CategoryValidation } from "../category.validation";
+import { prismaClient } from "../../application/database";
 import { type User } from "@prisma/client";
-import { ResponseError } from "../error/responseError";
-import { deleteFile } from "../utils/deleteFile";
+import { ResponseError } from "../../error/responseError";
+import { deleteFile } from "../../utils/deleteFile";
 
 export class CategoryService {
   static async create(request: CreateCategoryRequest): Promise<CategoryResponse> {
@@ -16,11 +16,7 @@ export class CategoryService {
     return toCategoryResponse(category);
   }
 
-  static async list(
-    search?: string,
-    page?: number,
-    size: number = 10
-  ): Promise<{ data: Array<CategoryResponse>; paging?: { size: number; total_page: number; current_page: number } }> {
+  static async list(search?: string, page?: number, size: number = 10): Promise<{ data: Array<CategoryResponse>; paging?: { size: number; total_page: number; current_page: number } }> {
     const where = search
       ? {
           OR: [{ name: { contains: search } }],

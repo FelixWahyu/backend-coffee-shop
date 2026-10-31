@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { CategoryService } from "../services/categoryService";
-import { type CreateCategoryRequest, type UpdateCategoryRequest } from "../model/categoryModel";
+import { CategoryService } from "../services/category.service";
+import { type CreateCategoryRequest, type UpdateCategoryRequest } from "../model/category.model";
 
 export class CategoryController {
   static async create(req: Request, res: Response, next: NextFunction) {
@@ -22,7 +22,7 @@ export class CategoryController {
       const search = typeof req.query.search === "string" ? req.query.search : "";
       const page = req.query.page ? Number(req.query.page) : undefined;
       const size = req.query.size ? Number(req.query.size) : 10;
-      
+
       const response = await CategoryService.list(search, page, size);
       res.status(200).json({
         success: true,
