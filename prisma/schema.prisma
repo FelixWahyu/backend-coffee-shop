@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  name String @db.VarChar(100)
+  username String @id @db.VarChar(100)
+  password String @db.VarChar(255)
+  token String? @db.VarChar(100)
+  role String @default("USER") @db.VarChar(50)
+
+  contacts Contact[]
+  reviews Review[]
+  // orders Order[]
+
+  @@map("users")
+}
+
+model Contact {
+  id Int @id @default(autoincrement())
+  first_name String @db.VarChar(100)
+  last_name String @db.VarChar(100)
+  email String? @db.VarChar(100)
+  phone String? @db.VarChar(100)
+  username String @db.VarChar(100)
+
+  user User @relation(fields: [username], references: [username])
+  addresses Address[]
+
+  @@map("contacts")
+}
+
+model Address {
+  id Int @id @default(autoincrement())
+  street String? @db.VarChar(255)
+  city String @db.VarChar(100)
+  province String @db.VarChar(100)
+  country String? @db.VarChar(100)
+  postal_code String? @db.VarChar(100)
+  contact_id Int
+
+  contact Contact @relation(fields: [contact_id], references: [id])
+
+  @@map("addresses")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String? @db.VarChar(255)
+  image String? @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String? @db.VarChar(255)
+  price Int @db.Int
+  image String? @db.VarChar(255)
+  category_id Int
+  createdAt DateTime @default(now())
+
+  category Category @relation(fields: [category_id], references: [id])
+
+  order_items OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+  total Int @db.Int
+  status OrderStatus @default(PENDING)
+  createdAt DateTime @default(now())
+
+  order_items OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id Int @id @default(autoincrement())
+  order_id Int
+  product_id Int
+  quantity Int @db.Int
+  price Int @db.Int
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [id], onDelete: Restrict)
+
+  @@unique([order_id, product_id])
+  @@index([order_id])
+  @@index([product_id])
+  @@map("order_items")
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+model Review {
+  id Int @id @default(autoincrement())
+  rating Int @db.Int
+  comment String @db.VarChar(255)
+  username String @db.VarChar(100)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [username], references: [username], onDelete: Cascade)
+
+  @@index([username])
+  @@map("reviews")
+}
+
+model BlogArticle {
+  id Int @id @default(autoincrement())
+  slug String @unique @db.VarChar(200)
+  title String @db.VarChar(200)
+  excerpt String @db.VarChar(500)
+  content String @db.Text
+  image String @db.VarChar(255)
+  category String @db.VarChar(100)
+  author String @db.VarChar(100)
+  tags String @db.VarChar(500)
+  readingTime Int @db.Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("blog_articles")
+}
+
+model LatihanImage {
+  id Int @id @default(autoincrement())
+  images String @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@map("latihan_image")
+}

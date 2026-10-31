@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const userController_1 = require("../controllers/userController");
+const productController_1 = require("../controllers/productController");
+const categoryController_1 = require("../controllers/categoryController");
+const reviewController_1 = require("../controllers/reviewController");
+const imageController_1 = require("../controllers/imageController");
+const blogController_1 = require("../controllers/blogController");
+const uploadMiddleware_1 = require("../middleware/uploadMiddleware");
+const publicRouter = express_1.default.Router();
+publicRouter.post("/api/users", userController_1.UserController.register);
+publicRouter.post("/api/users/login", userController_1.UserController.login);
+publicRouter.delete("/api/users/current/:username", userController_1.UserController.delete);
+publicRouter.get("/api/categories", categoryController_1.CategoryController.list);
+publicRouter.get("/api/products", productController_1.ProductController.list);
+publicRouter.get("/api/products/:id", productController_1.ProductController.get);
+publicRouter.get("/api/reviews", reviewController_1.ReviewController.getAllReview);
+publicRouter.post("/api/upload", uploadMiddleware_1.upload.single("images"), imageController_1.ImageController.create);
+publicRouter.get("/api/blogs", blogController_1.BlogController.list);
+publicRouter.get("/api/blogs/:slug", blogController_1.BlogController.getBySlug);
+exports.default = publicRouter;
