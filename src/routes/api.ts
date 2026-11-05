@@ -5,9 +5,10 @@ import { ContactController } from "../controllers/contactController";
 import { AddressController } from "../controllers/addressController";
 // import { CategoryController } from "../categories/controllers/category.controller";
 import routerCategory from "../features/categories/category.route";
+import routerBlog from "../features/blog/blog.route";
 import { ProductController } from "../controllers/productController";
 import { ReviewController } from "../controllers/reviewController";
-import { BlogController } from "../controllers/blogController";
+import { BlogController } from "../features/blog/blog.controller";
 import { StatsController } from "../controllers/statsController";
 import { adminMiddleware } from "../middleware/adminMiddleware";
 import { upload } from "../middleware/uploadMiddleware";
@@ -59,10 +60,11 @@ apiRouter.post("/api/reviews", ReviewController.create);
 apiRouter.get("/api/reviews", ReviewController.getAllReview);
 
 // Blog API (Admin)
-apiRouter.post("/api/blogs", adminMiddleware, BlogController.create);
-apiRouter.get("/api/blogs/detail/:id", adminMiddleware, BlogController.getById);
-apiRouter.put("/api/blogs/:id", adminMiddleware, BlogController.update);
-apiRouter.delete("/api/blogs/:id", adminMiddleware, BlogController.delete);
+// apiRouter.post("/api/blogs", adminMiddleware, BlogController.create);
+// apiRouter.get("/api/blogs/detail/:id", adminMiddleware, BlogController.getById);
+// apiRouter.put("/api/blogs/:id", adminMiddleware, BlogController.update);
+// apiRouter.delete("/api/blogs/:id", adminMiddleware, BlogController.delete);
+apiRouter.use("/api", routerBlog);
 
 // Admin Stats API
 apiRouter.get("/api/admin/stats", adminMiddleware, StatsController.get);

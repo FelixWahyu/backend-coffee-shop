@@ -1,9 +1,9 @@
-import { prismaClient } from "../application/database";
-import { slugify, toBlogResponse, type BlogResponse, type CreateBlogRequest, type UpdateBlogRequest } from "../model/blogModel";
-import { BlogValidation } from "../validation/blogValidation";
-import { Validation } from "../validation/validation";
-import { ResponseError } from "../error/responseError";
-import { deleteFile } from "../utils/deleteFile";
+import { prismaClient } from "../../application/database";
+import { slugify, toBlogResponse, type BlogResponse, type CreateBlogRequest, type UpdateBlogRequest } from "./blog.model";
+import { BlogValidation } from "./blog.validation";
+import { Validation } from "../../validation/validation";
+import { ResponseError } from "../../error/responseError";
+import { deleteFile } from "../../utils/deleteFile";
 
 export class BlogService {
   static async create(request: CreateBlogRequest): Promise<BlogResponse> {
@@ -40,18 +40,10 @@ export class BlogService {
     return toBlogResponse(article);
   }
 
-  static async list(
-    search?: string,
-    page?: number,
-    size: number = 10
-  ): Promise<{ data: Array<BlogResponse>; paging?: { size: number; total_page: number; current_page: number } }> {
+  static async list(search?: string, page?: number, size: number = 10): Promise<{ data: Array<BlogResponse>; paging?: { size: number; total_page: number; current_page: number } }> {
     const where = search
       ? {
-          OR: [
-            { title: { contains: search } },
-            { excerpt: { contains: search } },
-            { category: { contains: search } },
-          ],
+          OR: [{ title: { contains: search } }, { excerpt: { contains: search } }, { category: { contains: search } }],
         }
       : {};
 

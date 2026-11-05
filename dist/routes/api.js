@@ -11,9 +11,9 @@ const contactController_1 = require("../controllers/contactController");
 const addressController_1 = require("../controllers/addressController");
 // import { CategoryController } from "../categories/controllers/category.controller";
 const category_route_1 = __importDefault(require("../features/categories/category.route"));
+const blog_route_1 = __importDefault(require("../features/blog/blog.route"));
 const productController_1 = require("../controllers/productController");
 const reviewController_1 = require("../controllers/reviewController");
-const blogController_1 = require("../controllers/blogController");
 const statsController_1 = require("../controllers/statsController");
 const adminMiddleware_1 = require("../middleware/adminMiddleware");
 const upload_route_1 = __importDefault(require("../features/uploads/upload.route"));
@@ -55,10 +55,11 @@ exports.apiRouter.delete("/api/products/:id", adminMiddleware_1.adminMiddleware,
 exports.apiRouter.post("/api/reviews", reviewController_1.ReviewController.create);
 exports.apiRouter.get("/api/reviews", reviewController_1.ReviewController.getAllReview);
 // Blog API (Admin)
-exports.apiRouter.post("/api/blogs", adminMiddleware_1.adminMiddleware, blogController_1.BlogController.create);
-exports.apiRouter.get("/api/blogs/detail/:id", adminMiddleware_1.adminMiddleware, blogController_1.BlogController.getById);
-exports.apiRouter.put("/api/blogs/:id", adminMiddleware_1.adminMiddleware, blogController_1.BlogController.update);
-exports.apiRouter.delete("/api/blogs/:id", adminMiddleware_1.adminMiddleware, blogController_1.BlogController.delete);
+// apiRouter.post("/api/blogs", adminMiddleware, BlogController.create);
+// apiRouter.get("/api/blogs/detail/:id", adminMiddleware, BlogController.getById);
+// apiRouter.put("/api/blogs/:id", adminMiddleware, BlogController.update);
+// apiRouter.delete("/api/blogs/:id", adminMiddleware, BlogController.delete);
+exports.apiRouter.use("/api", blog_route_1.default);
 // Admin Stats API
 exports.apiRouter.get("/api/admin/stats", adminMiddleware_1.adminMiddleware, statsController_1.StatsController.get);
 // Admin User API

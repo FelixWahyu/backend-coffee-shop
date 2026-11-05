@@ -4,7 +4,7 @@ import { ProductController } from "../controllers/productController";
 import { CategoryController } from "../features/categories/category.controller";
 import { ReviewController } from "../controllers/reviewController";
 import { ImageController } from "../features/uploads/image.controller";
-import { BlogController } from "../controllers/blogController";
+import { BlogController } from "../features/blog/blog.controller";
 import { upload } from "../middleware/uploadMiddleware";
 
 const publicRouter = express.Router();
