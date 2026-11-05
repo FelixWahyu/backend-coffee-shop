@@ -120,7 +120,7 @@ enum OrderStatus {
 model Review {
   id Int @id @default(autoincrement())
   rating Int @db.Int
-  comment String @db.VarChar(255)
+  comment String @db.VarChar(1000)
   username String @db.VarChar(100)
   createdAt DateTime @default(now())
 
@@ -151,7 +151,7 @@ model LatihanImage {
   id Int @id @default(autoincrement())
   images String @db.VarChar(255)
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updateAt DateTime @default(now()) @updatedAt
 
   @@map("latihan_image")
 }

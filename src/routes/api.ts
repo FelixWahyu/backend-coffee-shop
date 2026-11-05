@@ -58,6 +58,7 @@ apiRouter.delete("/api/products/:id", adminMiddleware, ProductController.delete)
 // Review API
 apiRouter.post("/api/reviews", ReviewController.create);
 apiRouter.get("/api/reviews", ReviewController.getAllReview);
+apiRouter.delete("/api/reviews/:id", ReviewController.delete);
 
 // Blog API (Admin)
 // apiRouter.post("/api/blogs", adminMiddleware, BlogController.create);

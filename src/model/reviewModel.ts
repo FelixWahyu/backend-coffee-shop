@@ -1,15 +1,4 @@
 import type { Review } from "@prisma/client";
-import Prisma = require("@prisma/client");
-
-type ReviewWithUser = Review & {
-  user: {
-    name: string;
-    username: string;
-    contacts: {
-      email: string | null;
-    }[];
-  };
-};
 
 export type ReviewResponse = {
   id: number;
@@ -31,13 +20,16 @@ export type CreateReviewRequest = {
 };
 
 export function toReviewResponse(review: any): ReviewResponse {
+  const userName = review.user?.name || review.username || "Pelanggan";
+  const userUsername = review.user?.username || review.username || "";
+
   return {
     id: review.id,
     rating: review.rating,
     comment: review.comment,
     user: {
-      name: review.user?.name || "",
-      username: review.user?.username || review.username || "",
+      name: userName,
+      username: userUsername,
       contacts: review.user?.contacts
         ? review.user.contacts.map((contact: any) => ({
             email: contact.email,

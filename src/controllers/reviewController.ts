@@ -6,7 +6,10 @@ import { ReviewService } from "../services/reviewService";
 export class ReviewController {
   static async create(req: UserRequest, res: Response, next: NextFunction) {
     try {
-      const request: CreateReviewRequest = req.body as CreateReviewRequest;
+      const request: CreateReviewRequest = {
+        rating: Number(req.body.rating),
+        comment: req.body.comment,
+      };
       const response = await ReviewService.create(req.user!, request);
       res.status(200).json({
         success: true,
@@ -25,6 +28,19 @@ export class ReviewController {
         success: true,
         message: "Success get all review",
         data: response,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async delete(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const reviewId = Number(req.params.id);
+      await ReviewService.delete(req.user!, reviewId);
+      res.status(200).json({
+        success: true,
+        message: "Success delete review",
       });
     } catch (error) {
       next(error);

@@ -5,7 +5,10 @@ const reviewService_1 = require("../services/reviewService");
 class ReviewController {
     static async create(req, res, next) {
         try {
-            const request = req.body;
+            const request = {
+                rating: Number(req.body.rating),
+                comment: req.body.comment,
+            };
             const response = await reviewService_1.ReviewService.create(req.user, request);
             res.status(200).json({
                 success: true,
@@ -24,6 +27,19 @@ class ReviewController {
                 success: true,
                 message: "Success get all review",
                 data: response,
+            });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async delete(req, res, next) {
+        try {
+            const reviewId = Number(req.params.id);
+            await reviewService_1.ReviewService.delete(req.user, reviewId);
+            res.status(200).json({
+                success: true,
+                message: "Success delete review",
             });
         }
         catch (error) {

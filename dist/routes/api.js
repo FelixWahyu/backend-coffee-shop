@@ -54,6 +54,7 @@ exports.apiRouter.delete("/api/products/:id", adminMiddleware_1.adminMiddleware,
 // Review API
 exports.apiRouter.post("/api/reviews", reviewController_1.ReviewController.create);
 exports.apiRouter.get("/api/reviews", reviewController_1.ReviewController.getAllReview);
+exports.apiRouter.delete("/api/reviews/:id", reviewController_1.ReviewController.delete);
 // Blog API (Admin)
 // apiRouter.post("/api/blogs", adminMiddleware, BlogController.create);
 // apiRouter.get("/api/blogs/detail/:id", adminMiddleware, BlogController.getById);

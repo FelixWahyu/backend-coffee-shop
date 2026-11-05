@@ -3,7 +3,6 @@ import { toReviewResponse, type CreateReviewRequest, type ReviewResponse } from 
 import { ReviewValidation } from "../validation/reviewsValidation";
 import { Validation } from "../validation/validation";
 import { prismaClient } from "../application/database";
-import { logger } from "../application/logging";
 import { ResponseError } from "../error/responseError";
 
 export class ReviewService {
@@ -12,11 +11,24 @@ export class ReviewService {
 
     const record = {
       ...createRequest,
-      ...{ username: user.username },
+      username: user.username,
     };
 
     const review = await prismaClient.review.create({
       data: record,
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+            contacts: {
+              select: {
+                email: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return toReviewResponse(review);
@@ -29,7 +41,6 @@ export class ReviewService {
           select: {
             name: true,
             username: true,
-
             contacts: {
               select: {
                 email: true,
@@ -44,5 +55,23 @@ export class ReviewService {
     });
 
     return reviews.map((review) => toReviewResponse(review));
+  }
+
+  static async delete(user: User, id: number): Promise<void> {
+    const review = await prismaClient.review.findUnique({
+      where: { id },
+    });
+
+    if (!review) {
+      throw new ResponseError(404, "Ulasan tidak ditemukan");
+    }
+
+    if (review.username !== user.username && user.role !== "ADMIN") {
+      throw new ResponseError(403, "Anda tidak memiliki izin untuk menghapus ulasan ini");
+    }
+
+    await prismaClient.review.delete({
+      where: { id },
+    });
   }
 }
