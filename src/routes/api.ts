@@ -6,13 +6,14 @@ import { AddressController } from "../controllers/addressController";
 // import { CategoryController } from "../categories/controllers/category.controller";
 import routerCategory from "../features/categories/category.route";
 import routerBlog from "../features/blog/blog.route";
-import { ProductController } from "../controllers/productController";
+// import { ProductController } from "../features/product/product.controller";
+import routerProduct from "../features/product/product.route";
 import { ReviewController } from "../controllers/reviewController";
-import { BlogController } from "../features/blog/blog.controller";
+// import { BlogController } from "../features/blog/blog.controller";
 import { StatsController } from "../controllers/statsController";
 import { adminMiddleware } from "../middleware/adminMiddleware";
-import { upload } from "../middleware/uploadMiddleware";
-import { UploadImageController } from "../features/uploads/upload.controller";
+// import { upload } from "../middleware/uploadMiddleware";
+// import { UploadImageController } from "../features/uploads/upload.controller";
 import routerUpload from "../features/uploads/upload.route";
 
 export const apiRouter = express.Router();
@@ -49,11 +50,12 @@ apiRouter.use("/api", routerCategory);
 apiRouter.use("/api", routerUpload);
 
 // Product API
-apiRouter.post("/api/products", adminMiddleware, ProductController.create);
-apiRouter.get("/api/products", ProductController.list);
-apiRouter.get("/api/products/:id", ProductController.get);
-apiRouter.patch("/api/products/:id", adminMiddleware, ProductController.update);
-apiRouter.delete("/api/products/:id", adminMiddleware, ProductController.delete);
+// apiRouter.post("/api/products", adminMiddleware, ProductController.create);
+// apiRouter.get("/api/products", ProductController.list);
+// apiRouter.get("/api/products/:id", ProductController.get);
+// apiRouter.patch("/api/products/:id", adminMiddleware, ProductController.update);
+// apiRouter.delete("/api/products/:id", adminMiddleware, ProductController.delete);
+apiRouter.use("/api", routerProduct);
 
 // Review API
 apiRouter.post("/api/reviews", ReviewController.create);

@@ -1,10 +1,10 @@
 import type { Category } from "@prisma/client";
-import { prismaClient } from "../application/database";
-import { toProductResponse, type CreateProductRequest, type ProductResponse, type UpdateProductRequest } from "../model/productModel";
-import { ProductValidation } from "../validation/productValidation";
-import { Validation } from "../validation/validation";
-import { ResponseError } from "../error/responseError";
-import { deleteFile } from "../utils/deleteFile";
+import { prismaClient } from "../../application/database";
+import { toProductResponse, type CreateProductRequest, type ProductResponse, type UpdateProductRequest } from "./product.model";
+import { ProductValidation } from "./product.validation";
+import { Validation } from "../../validation/validation";
+import { ResponseError } from "../../error/responseError";
+import { deleteFile } from "../../utils/deleteFile";
 
 export class ProductService {
   static async create(request: CreateProductRequest): Promise<ProductResponse> {
@@ -45,14 +45,9 @@ export class ProductService {
     return toProductResponse(product);
   }
 
-  static async list(
-    search?: string, 
-    categoryId?: number,
-    page?: number,
-    size: number = 10
-  ): Promise<{ data: Array<ProductResponse>; paging?: { size: number; total_page: number; current_page: number } }> {
+  static async list(search?: string, categoryId?: number, page?: number, size: number = 10): Promise<{ data: Array<ProductResponse>; paging?: { size: number; total_page: number; current_page: number } }> {
     const whereClause: any = {};
-    
+
     if (search) {
       whereClause.OR = [
         {
@@ -69,7 +64,7 @@ export class ProductService {
         },
       ];
     }
-    
+
     if (categoryId) {
       whereClause.category_id = categoryId;
     }
@@ -87,10 +82,12 @@ export class ProductService {
       orderBy: {
         createdAt: "desc",
       },
-      ...(page !== undefined ? {
-        skip: (page - 1) * size,
-        take: size,
-      } : {}),
+      ...(page !== undefined
+        ? {
+            skip: (page - 1) * size,
+            take: size,
+          }
+        : {}),
     });
 
     if (page !== undefined) {
