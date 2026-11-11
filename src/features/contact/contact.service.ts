@@ -1,11 +1,11 @@
 import type { Contact, User } from "@prisma/client";
-import { toContactResponse, type CreateContactRequest, type ContactResponse, type UpdateContactRequest, type SearchContactRequest } from "../model/contactModel";
-import { type Pageable } from "../model/page";
-import { ContactValidation } from "../validation/contactValidation";
-import { Validation } from "../validation/validation";
-import { prismaClient } from "../application/database";
-import { logger } from "../application/logging";
-import { ResponseError } from "../error/responseError";
+import { toContactResponse, type CreateContactRequest, type ContactResponse, type UpdateContactRequest, type SearchContactRequest } from "./contact.model";
+import { type Pageable } from "../../model/page";
+import { ContactValidation } from "./contact.validation";
+import { Validation } from "../../validation/validation";
+import { prismaClient } from "../../application/database";
+import { logger } from "../../application/logging";
+import { ResponseError } from "../../error/responseError";
 
 export class ContactService {
   static async create(user: User, request: CreateContactRequest): Promise<ContactResponse> {

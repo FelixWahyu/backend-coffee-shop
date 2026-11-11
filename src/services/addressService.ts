@@ -3,7 +3,7 @@ import { toAddressResponse, type AddressResponse, type CreateAddressRequest, typ
 import { Validation } from "../validation/validation";
 import { AddressValidation } from "../validation/addressValidation";
 import { prismaClient } from "../application/database";
-import { ContactService } from "./contactService";
+import { ContactService } from "../features/contact/contact.service";
 import { ResponseError } from "../error/responseError";
 import { th } from "zod/v4/locales";
 

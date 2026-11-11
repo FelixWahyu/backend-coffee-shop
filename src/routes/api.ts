@@ -2,7 +2,7 @@ import express from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 // import { UserController } from "../features/user/user.controller";
 import routerUsers from "../features/user/user.route";
-import { ContactController } from "../controllers/contactController";
+// import { ContactController } from "../features/contact/contact.controller";
 import { AddressController } from "../controllers/addressController";
 // import { CategoryController } from "../categories/controllers/category.controller";
 import routerCategory from "../features/categories/category.route";
@@ -16,6 +16,7 @@ import { adminMiddleware } from "../middleware/adminMiddleware";
 // import { upload } from "../middleware/uploadMiddleware";
 // import { UploadImageController } from "../features/uploads/upload.controller";
 import routerUpload from "../features/uploads/upload.route";
+import routerContact from "../features/contact/contact.route";
 
 export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
@@ -28,11 +29,12 @@ apiRouter.use(authMiddleware);
 apiRouter.use("/api", routerUsers);
 
 // Contact API
-apiRouter.post("/api/contacts", ContactController.create);
-apiRouter.get("/api/contacts/:contactId", ContactController.get);
-apiRouter.put("/api/contacts/:contactId", ContactController.update);
-apiRouter.delete("/api/contacts/:contactId", ContactController.delete);
-apiRouter.get("/api/contacts", ContactController.search);
+// apiRouter.post("/api/contacts", ContactController.create);
+// apiRouter.get("/api/contacts/:contactId", ContactController.get);
+// apiRouter.put("/api/contacts/:contactId", ContactController.update);
+// apiRouter.delete("/api/contacts/:contactId", ContactController.delete);
+// apiRouter.get("/api/contacts", ContactController.search);
+apiRouter.use("/api", routerContact);
 
 // Address API
 apiRouter.post("/api/contacts/:contactId/addresses", AddressController.create);

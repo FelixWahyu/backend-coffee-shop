@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
-import type { UserRequest } from "../type/userRequest";
-import type { CreateContactRequest, SearchContactRequest, UpdateContactRequest } from "../model/contactModel";
-import { ContactService } from "../services/contactService";
+import type { UserRequest } from "../../type/userRequest";
+import type { CreateContactRequest, SearchContactRequest, UpdateContactRequest } from "./contact.model";
+import { ContactService } from "./contact.service";
 import { z } from "zod";
 
 const getContactSchema = z.object({

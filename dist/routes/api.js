@@ -8,7 +8,7 @@ const express_1 = __importDefault(require("express"));
 const authMiddleware_1 = require("../middleware/authMiddleware");
 // import { UserController } from "../features/user/user.controller";
 const user_route_1 = __importDefault(require("../features/user/user.route"));
-const contactController_1 = require("../controllers/contactController");
+// import { ContactController } from "../features/contact/contact.controller";
 const addressController_1 = require("../controllers/addressController");
 // import { CategoryController } from "../categories/controllers/category.controller";
 const category_route_1 = __importDefault(require("../features/categories/category.route"));
@@ -22,6 +22,7 @@ const adminMiddleware_1 = require("../middleware/adminMiddleware");
 // import { upload } from "../middleware/uploadMiddleware";
 // import { UploadImageController } from "../features/uploads/upload.controller";
 const upload_route_1 = __importDefault(require("../features/uploads/upload.route"));
+const contact_route_1 = __importDefault(require("../features/contact/contact.route"));
 exports.apiRouter = express_1.default.Router();
 exports.apiRouter.use(authMiddleware_1.authMiddleware);
 // User API
@@ -31,11 +32,12 @@ exports.apiRouter.use(authMiddleware_1.authMiddleware);
 // apiRouter.delete("/api/users/current/:username", UserController.delete);
 exports.apiRouter.use("/api", user_route_1.default);
 // Contact API
-exports.apiRouter.post("/api/contacts", contactController_1.ContactController.create);
-exports.apiRouter.get("/api/contacts/:contactId", contactController_1.ContactController.get);
-exports.apiRouter.put("/api/contacts/:contactId", contactController_1.ContactController.update);
-exports.apiRouter.delete("/api/contacts/:contactId", contactController_1.ContactController.delete);
-exports.apiRouter.get("/api/contacts", contactController_1.ContactController.search);
+// apiRouter.post("/api/contacts", ContactController.create);
+// apiRouter.get("/api/contacts/:contactId", ContactController.get);
+// apiRouter.put("/api/contacts/:contactId", ContactController.update);
+// apiRouter.delete("/api/contacts/:contactId", ContactController.delete);
+// apiRouter.get("/api/contacts", ContactController.search);
+exports.apiRouter.use("/api", contact_route_1.default);
 // Address API
 exports.apiRouter.post("/api/contacts/:contactId/addresses", addressController_1.AddressController.create);
 exports.apiRouter.get("/api/contacts/:contactId/addresses/:addressId", addressController_1.AddressController.get);

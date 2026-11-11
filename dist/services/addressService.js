@@ -5,12 +5,12 @@ const addressModel_1 = require("../model/addressModel");
 const validation_1 = require("../validation/validation");
 const addressValidation_1 = require("../validation/addressValidation");
 const database_1 = require("../application/database");
-const contactService_1 = require("./contactService");
+const contact_service_1 = require("../features/contact/contact.service");
 const responseError_1 = require("../error/responseError");
 class AddressService {
     static async create(user, request) {
         const addressRequest = validation_1.Validation.validate(addressValidation_1.AddressValidation.CREATE, request);
-        await contactService_1.ContactService.checkContactExist(user.username, addressRequest.contact_id);
+        await contact_service_1.ContactService.checkContactExist(user.username, addressRequest.contact_id);
         const address = await database_1.prismaClient.address.create({
             data: addressRequest,
         });
@@ -30,13 +30,13 @@ class AddressService {
     }
     static async get(user, request) {
         const addressRequest = validation_1.Validation.validate(addressValidation_1.AddressValidation.GET, request);
-        await contactService_1.ContactService.checkContactExist(user.username, request.contact_id);
+        await contact_service_1.ContactService.checkContactExist(user.username, request.contact_id);
         const address = await this.checkAddressExist(addressRequest.contact_id, addressRequest.id);
         return (0, addressModel_1.toAddressResponse)(address);
     }
     static async update(user, request) {
         const updateRequest = validation_1.Validation.validate(addressValidation_1.AddressValidation.UPDATE, request);
-        await contactService_1.ContactService.checkContactExist(user.username, updateRequest.contact_id);
+        await contact_service_1.ContactService.checkContactExist(user.username, updateRequest.contact_id);
         await this.checkAddressExist(updateRequest.contact_id, updateRequest.id);
         const address = await database_1.prismaClient.address.update({
             where: {
@@ -49,7 +49,7 @@ class AddressService {
     }
     static async delete(user, request) {
         const removeRequest = validation_1.Validation.validate(addressValidation_1.AddressValidation.REMOVE, request);
-        await contactService_1.ContactService.checkContactExist(user.username, removeRequest.contact_id);
+        await contact_service_1.ContactService.checkContactExist(user.username, removeRequest.contact_id);
         await this.checkAddressExist(removeRequest.contact_id, removeRequest.id);
         const address = await database_1.prismaClient.address.delete({
             where: {
@@ -60,7 +60,7 @@ class AddressService {
         return (0, addressModel_1.toAddressResponse)(address);
     }
     static async list(user, contactId) {
-        await contactService_1.ContactService.checkContactExist(user.username, contactId);
+        await contact_service_1.ContactService.checkContactExist(user.username, contactId);
         const addresses = await database_1.prismaClient.address.findMany({
             where: {
                 contact_id: contactId,
