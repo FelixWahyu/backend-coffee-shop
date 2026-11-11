@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.apiRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const authMiddleware_1 = require("../middleware/authMiddleware");
-const userController_1 = require("../controllers/userController");
+// import { UserController } from "../features/user/user.controller";
+const user_route_1 = __importDefault(require("../features/user/user.route"));
 const contactController_1 = require("../controllers/contactController");
 const addressController_1 = require("../controllers/addressController");
 // import { CategoryController } from "../categories/controllers/category.controller";
@@ -24,10 +25,11 @@ const upload_route_1 = __importDefault(require("../features/uploads/upload.route
 exports.apiRouter = express_1.default.Router();
 exports.apiRouter.use(authMiddleware_1.authMiddleware);
 // User API
-exports.apiRouter.get("/api/users/current", userController_1.UserController.get);
-exports.apiRouter.patch("/api/users/current", userController_1.UserController.update);
-exports.apiRouter.delete("/api/users/logout", userController_1.UserController.logout);
-exports.apiRouter.delete("/api/users/current/:username", userController_1.UserController.delete);
+// apiRouter.get("/api/users/current", UserController.get);
+// apiRouter.patch("/api/users/current", UserController.update);
+// apiRouter.delete("/api/users/logout", UserController.logout);
+// apiRouter.delete("/api/users/current/:username", UserController.delete);
+exports.apiRouter.use("/api", user_route_1.default);
 // Contact API
 exports.apiRouter.post("/api/contacts", contactController_1.ContactController.create);
 exports.apiRouter.get("/api/contacts/:contactId", contactController_1.ContactController.get);
@@ -69,8 +71,8 @@ exports.apiRouter.use("/api", blog_route_1.default);
 // Admin Stats API
 exports.apiRouter.get("/api/admin/stats", adminMiddleware_1.adminMiddleware, statsController_1.StatsController.get);
 // Admin User API
-exports.apiRouter.get("/api/admin/users", adminMiddleware_1.adminMiddleware, userController_1.UserController.adminList);
-exports.apiRouter.get("/api/admin/users/:username", adminMiddleware_1.adminMiddleware, userController_1.UserController.adminGet);
-exports.apiRouter.post("/api/admin/users", adminMiddleware_1.adminMiddleware, userController_1.UserController.adminCreate);
-exports.apiRouter.put("/api/admin/users/:username", adminMiddleware_1.adminMiddleware, userController_1.UserController.adminUpdate);
-exports.apiRouter.delete("/api/admin/users/:username", adminMiddleware_1.adminMiddleware, userController_1.UserController.adminDelete);
+// apiRouter.get("/api/admin/users", adminMiddleware, UserController.adminList);
+// apiRouter.get("/api/admin/users/:username", adminMiddleware, UserController.adminGet);
+// apiRouter.post("/api/admin/users", adminMiddleware, UserController.adminCreate);
+// apiRouter.put("/api/admin/users/:username", adminMiddleware, UserController.adminUpdate);
+// apiRouter.delete("/api/admin/users/:username", adminMiddleware, UserController.adminDelete);

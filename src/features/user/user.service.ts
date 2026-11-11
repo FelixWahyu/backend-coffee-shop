@@ -1,10 +1,10 @@
 import type { User } from "@prisma/client";
-import { prismaClient } from "../application/database";
-import { ResponseError } from "../error/responseError";
-import { toUserResponse, type CreateUserRequest, type LoginUserRequest, type UserResponse, type UpdateUserRequest, type CreateAdminUserRequest, type UpdateAdminUserRequest } from "../model/userModel";
-import type { Pageable } from "../model/page";
-import { UserValidation } from "../validation/userValidation";
-import { Validation } from "../validation/validation";
+import { prismaClient } from "../../application/database";
+import { ResponseError } from "../../error/responseError";
+import { toUserResponse, type CreateUserRequest, type LoginUserRequest, type UserResponse, type UpdateUserRequest, type CreateAdminUserRequest, type UpdateAdminUserRequest } from "./user.model";
+import type { Pageable } from "../../model/page";
+import { UserValidation } from "./user.validation";
+import { Validation } from "../../validation/validation";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 
@@ -125,10 +125,7 @@ export class UserService {
   static async list(search?: string, page: number = 1, size: number = 10): Promise<Pageable<UserResponse>> {
     const whereClause: any = {};
     if (search) {
-      whereClause.OR = [
-        { username: { contains: search } },
-        { name: { contains: search } },
-      ];
+      whereClause.OR = [{ username: { contains: search } }, { name: { contains: search } }];
     }
 
     const skip = (page - 1) * size;

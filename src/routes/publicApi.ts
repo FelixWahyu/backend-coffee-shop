@@ -1,5 +1,5 @@
 import express from "express";
-import { UserController } from "../controllers/userController";
+import { UserController } from "../features/user/user.controller";
 import { ProductController } from "../features/product/product.controller";
 import { CategoryController } from "../features/categories/category.controller";
 import { ReviewController } from "../controllers/reviewController";

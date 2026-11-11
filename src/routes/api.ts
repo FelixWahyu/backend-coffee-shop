@@ -1,6 +1,7 @@
 import express from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
-import { UserController } from "../controllers/userController";
+// import { UserController } from "../features/user/user.controller";
+import routerUsers from "../features/user/user.route";
 import { ContactController } from "../controllers/contactController";
 import { AddressController } from "../controllers/addressController";
 // import { CategoryController } from "../categories/controllers/category.controller";
@@ -20,10 +21,11 @@ export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
 
 // User API
-apiRouter.get("/api/users/current", UserController.get);
-apiRouter.patch("/api/users/current", UserController.update);
-apiRouter.delete("/api/users/logout", UserController.logout);
-apiRouter.delete("/api/users/current/:username", UserController.delete);
+// apiRouter.get("/api/users/current", UserController.get);
+// apiRouter.patch("/api/users/current", UserController.update);
+// apiRouter.delete("/api/users/logout", UserController.logout);
+// apiRouter.delete("/api/users/current/:username", UserController.delete);
+apiRouter.use("/api", routerUsers);
 
 // Contact API
 apiRouter.post("/api/contacts", ContactController.create);
@@ -73,8 +75,8 @@ apiRouter.use("/api", routerBlog);
 apiRouter.get("/api/admin/stats", adminMiddleware, StatsController.get);
 
 // Admin User API
-apiRouter.get("/api/admin/users", adminMiddleware, UserController.adminList);
-apiRouter.get("/api/admin/users/:username", adminMiddleware, UserController.adminGet);
-apiRouter.post("/api/admin/users", adminMiddleware, UserController.adminCreate);
-apiRouter.put("/api/admin/users/:username", adminMiddleware, UserController.adminUpdate);
-apiRouter.delete("/api/admin/users/:username", adminMiddleware, UserController.adminDelete);
+// apiRouter.get("/api/admin/users", adminMiddleware, UserController.adminList);
+// apiRouter.get("/api/admin/users/:username", adminMiddleware, UserController.adminGet);
+// apiRouter.post("/api/admin/users", adminMiddleware, UserController.adminCreate);
+// apiRouter.put("/api/admin/users/:username", adminMiddleware, UserController.adminUpdate);
+// apiRouter.delete("/api/admin/users/:username", adminMiddleware, UserController.adminDelete);
