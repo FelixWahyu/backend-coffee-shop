@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
-import type { UserRequest } from "../type/userRequest";
-import type { CreateReviewRequest } from "../model/reviewModel";
-import { ReviewService } from "../services/reviewService";
+import type { UserRequest } from "../../type/userRequest";
+import type { CreateReviewRequest } from "./review.model";
+import { ReviewService } from "./review.service";
 
 export class ReviewController {
   static async create(req: UserRequest, res: Response, next: NextFunction) {

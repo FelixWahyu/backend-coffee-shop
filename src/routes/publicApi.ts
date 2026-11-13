@@ -2,7 +2,7 @@ import express from "express";
 import { UserController } from "../features/user/user.controller";
 import { ProductController } from "../features/product/product.controller";
 import { CategoryController } from "../features/categories/category.controller";
-import { ReviewController } from "../controllers/reviewController";
+import { ReviewController } from "../features/review/review.controller";
 import { ImageController } from "../features/uploads/image.controller";
 import { BlogController } from "../features/blog/blog.controller";
 import { upload } from "../middleware/uploadMiddleware";

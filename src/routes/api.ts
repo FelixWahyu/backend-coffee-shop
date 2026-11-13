@@ -9,7 +9,7 @@ import routerCategory from "../features/categories/category.route";
 import routerBlog from "../features/blog/blog.route";
 // import { ProductController } from "../features/product/product.controller";
 import routerProduct from "../features/product/product.route";
-import { ReviewController } from "../controllers/reviewController";
+// import { ReviewController } from "../features/review/review.controller";
 // import { BlogController } from "../features/blog/blog.controller";
 import { StatsController } from "../controllers/statsController";
 import { adminMiddleware } from "../middleware/adminMiddleware";
@@ -18,6 +18,7 @@ import { adminMiddleware } from "../middleware/adminMiddleware";
 import routerUpload from "../features/uploads/upload.route";
 import routerContact from "../features/contact/contact.route";
 import routerAddress from "../features/address/address.route";
+import routerReview from "../features/review/review.route";
 
 export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
@@ -64,9 +65,10 @@ apiRouter.use("/api", routerUpload);
 apiRouter.use("/api", routerProduct);
 
 // Review API
-apiRouter.post("/api/reviews", ReviewController.create);
-apiRouter.get("/api/reviews", ReviewController.getAllReview);
-apiRouter.delete("/api/reviews/:id", ReviewController.delete);
+// apiRouter.post("/api/reviews", ReviewController.create);
+// apiRouter.get("/api/reviews", ReviewController.getAllReview);
+// apiRouter.delete("/api/reviews/:id", ReviewController.delete);
+apiRouter.use("/api", routerReview);
 
 // Blog API (Admin)
 // apiRouter.post("/api/blogs", adminMiddleware, BlogController.create);

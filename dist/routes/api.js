@@ -15,7 +15,7 @@ const category_route_1 = __importDefault(require("../features/categories/categor
 const blog_route_1 = __importDefault(require("../features/blog/blog.route"));
 // import { ProductController } from "../features/product/product.controller";
 const product_route_1 = __importDefault(require("../features/product/product.route"));
-const reviewController_1 = require("../controllers/reviewController");
+// import { ReviewController } from "../features/review/review.controller";
 // import { BlogController } from "../features/blog/blog.controller";
 const statsController_1 = require("../controllers/statsController");
 const adminMiddleware_1 = require("../middleware/adminMiddleware");
@@ -24,6 +24,7 @@ const adminMiddleware_1 = require("../middleware/adminMiddleware");
 const upload_route_1 = __importDefault(require("../features/uploads/upload.route"));
 const contact_route_1 = __importDefault(require("../features/contact/contact.route"));
 const address_route_1 = __importDefault(require("../features/address/address.route"));
+const review_route_1 = __importDefault(require("../features/review/review.route"));
 exports.apiRouter = express_1.default.Router();
 exports.apiRouter.use(authMiddleware_1.authMiddleware);
 // User API
@@ -63,9 +64,10 @@ exports.apiRouter.use("/api", upload_route_1.default);
 // apiRouter.delete("/api/products/:id", adminMiddleware, ProductController.delete);
 exports.apiRouter.use("/api", product_route_1.default);
 // Review API
-exports.apiRouter.post("/api/reviews", reviewController_1.ReviewController.create);
-exports.apiRouter.get("/api/reviews", reviewController_1.ReviewController.getAllReview);
-exports.apiRouter.delete("/api/reviews/:id", reviewController_1.ReviewController.delete);
+// apiRouter.post("/api/reviews", ReviewController.create);
+// apiRouter.get("/api/reviews", ReviewController.getAllReview);
+// apiRouter.delete("/api/reviews/:id", ReviewController.delete);
+exports.apiRouter.use("/api", review_route_1.default);
 // Blog API (Admin)
 // apiRouter.post("/api/blogs", adminMiddleware, BlogController.create);
 // apiRouter.get("/api/blogs/detail/:id", adminMiddleware, BlogController.getById);

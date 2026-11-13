@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const user_controller_1 = require("../features/user/user.controller");
 const product_controller_1 = require("../features/product/product.controller");
 const category_controller_1 = require("../features/categories/category.controller");
-const reviewController_1 = require("../controllers/reviewController");
+const review_controller_1 = require("../features/review/review.controller");
 const image_controller_1 = require("../features/uploads/image.controller");
 const blog_controller_1 = require("../features/blog/blog.controller");
 const uploadMiddleware_1 = require("../middleware/uploadMiddleware");
@@ -18,7 +18,7 @@ publicRouter.delete("/api/users/current/:username", user_controller_1.UserContro
 publicRouter.get("/api/categories", category_controller_1.CategoryController.list);
 publicRouter.get("/api/products", product_controller_1.ProductController.list);
 publicRouter.get("/api/products/:id", product_controller_1.ProductController.get);
-publicRouter.get("/api/reviews", reviewController_1.ReviewController.getAllReview);
+publicRouter.get("/api/reviews", review_controller_1.ReviewController.getAllReview);
 publicRouter.post("/api/upload", uploadMiddleware_1.upload.single("images"), image_controller_1.ImageController.create);
 publicRouter.get("/api/blogs", blog_controller_1.BlogController.list);
 publicRouter.get("/api/blogs/:slug", blog_controller_1.BlogController.getBySlug);

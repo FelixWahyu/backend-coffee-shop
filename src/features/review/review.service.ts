@@ -1,9 +1,9 @@
 import type { User } from "@prisma/client";
-import { toReviewResponse, type CreateReviewRequest, type ReviewResponse } from "../model/reviewModel";
-import { ReviewValidation } from "../validation/reviewsValidation";
-import { Validation } from "../validation/validation";
-import { prismaClient } from "../application/database";
-import { ResponseError } from "../error/responseError";
+import { toReviewResponse, type CreateReviewRequest, type ReviewResponse } from "./review.model";
+import { ReviewValidation } from "./review.validation";
+import { Validation } from "../../validation/validation";
+import { prismaClient } from "../../application/database";
+import { ResponseError } from "../../error/responseError";
 
 export class ReviewService {
   static async create(user: User, request: CreateReviewRequest): Promise<ReviewResponse> {
