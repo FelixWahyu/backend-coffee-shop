@@ -67,4 +67,43 @@ export class UserValidation {
       })
       .optional(),
   });
+
+  static readonly CONTACT_CREATE: ZodType = z.object({
+    first_name: z.string().trim().min(1, "First name is required").max(100),
+    last_name: z.string().trim().min(1, "Last name is required").max(100),
+    email: z.string().trim().email("Invalid email").optional().nullable().or(z.literal("")),
+    phone: z.string().trim().max(20).optional().nullable().or(z.literal("")),
+    address: z
+      .object({
+        street: z.string().trim().max(255).optional().nullable().or(z.literal("")),
+        city: z.string().trim().min(1, "City is required").max(100),
+        province: z.string().trim().min(1, "Province is required").max(100),
+        country: z.string().trim().max(100).optional().nullable().or(z.literal("")),
+        postal_code: z.string().trim().max(10).optional().nullable().or(z.literal("")),
+      })
+      .optional(),
+  });
+
+  static readonly CONTACT_UPDATE: ZodType = z.object({
+    first_name: z.string().trim().min(1, "First name is required").max(100).optional(),
+    last_name: z.string().trim().min(1, "Last name is required").max(100).optional(),
+    email: z.string().trim().email("Invalid email").optional().nullable().or(z.literal("")),
+    phone: z.string().trim().max(20).optional().nullable().or(z.literal("")),
+  });
+
+  static readonly ADDRESS_CREATE: ZodType = z.object({
+    street: z.string().trim().max(255).optional().nullable().or(z.literal("")),
+    city: z.string().trim().min(1, "City is required").max(100),
+    province: z.string().trim().min(1, "Province is required").max(100),
+    country: z.string().trim().max(100).optional().nullable().or(z.literal("")),
+    postal_code: z.string().trim().max(10).optional().nullable().or(z.literal("")),
+  });
+
+  static readonly ADDRESS_UPDATE: ZodType = z.object({
+    street: z.string().trim().max(255).optional().nullable().or(z.literal("")),
+    city: z.string().trim().min(1, "City is required").max(100).optional(),
+    province: z.string().trim().min(1, "Province is required").max(100).optional(),
+    country: z.string().trim().max(100).optional().nullable().or(z.literal("")),
+    postal_code: z.string().trim().max(10).optional().nullable().or(z.literal("")),
+  });
 }

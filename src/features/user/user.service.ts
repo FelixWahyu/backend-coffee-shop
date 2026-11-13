@@ -1,7 +1,23 @@
 import type { User } from "@prisma/client";
 import { prismaClient } from "../../application/database";
 import { ResponseError } from "../../error/responseError";
-import { toUserResponse, type CreateUserRequest, type LoginUserRequest, type UserResponse, type UpdateUserRequest, type CreateAdminUserRequest, type UpdateAdminUserRequest } from "./user.model";
+import {
+  toUserResponse,
+  toUserDetailResponse,
+  type CreateUserRequest,
+  type LoginUserRequest,
+  type UserResponse,
+  type UserDetailResponse,
+  type UpdateUserRequest,
+  type CreateAdminUserRequest,
+  type UpdateAdminUserRequest,
+  type CreateUserContactRequest,
+  type UpdateUserContactRequest,
+  type CreateUserAddressRequest,
+  type UpdateUserAddressRequest,
+  type ContactDetail,
+  type AddressDetail,
+} from "./user.model";
 import type { Pageable } from "../../model/page";
 import { UserValidation } from "./user.validation";
 import { Validation } from "../../validation/validation";
@@ -151,16 +167,23 @@ export class UserService {
     };
   }
 
-  static async getByUsername(username: string): Promise<UserResponse> {
+  static async getByUsername(username: string): Promise<UserDetailResponse> {
     const user = await prismaClient.user.findUnique({
       where: { username },
+      include: {
+        contacts: {
+          include: {
+            addresses: true,
+          },
+        },
+      },
     });
 
     if (!user) {
       throw new ResponseError(404, "User not found");
     }
 
-    return toUserResponse(user);
+    return toUserDetailResponse(user);
   }
 
   static async createByAdmin(request: CreateAdminUserRequest): Promise<UserResponse> {
@@ -254,5 +277,236 @@ export class UserService {
     });
 
     return toUserResponse(deletedUser);
+  }
+
+  static async createContact(username: string, request: CreateUserContactRequest): Promise<ContactDetail> {
+    const validated = Validation.validate(UserValidation.CONTACT_CREATE, request);
+
+    const user = await prismaClient.user.findUnique({
+      where: { username },
+    });
+
+    if (!user) {
+      throw new ResponseError(404, "User not found");
+    }
+
+    const { address, ...contactData } = validated;
+
+    const contact = await prismaClient.contact.create({
+      data: {
+        first_name: contactData.first_name,
+        last_name: contactData.last_name,
+        email: contactData.email || null,
+        phone: contactData.phone || null,
+        username: username,
+        addresses: address
+          ? {
+              create: {
+                street: address.street || null,
+                city: address.city,
+                province: address.province,
+                country: address.country || null,
+                postal_code: address.postal_code || null,
+              },
+            }
+          : undefined,
+      },
+      include: {
+        addresses: true,
+      },
+    });
+
+    return {
+      id: contact.id,
+      first_name: contact.first_name,
+      last_name: contact.last_name,
+      email: contact.email,
+      phone: contact.phone,
+      username: contact.username,
+      addresses: contact.addresses.map((a) => ({
+        id: a.id,
+        street: a.street,
+        city: a.city,
+        province: a.province,
+        country: a.country,
+        postal_code: a.postal_code,
+        contact_id: a.contact_id,
+      })),
+    };
+  }
+
+  static async updateContact(username: string, contactId: number, request: UpdateUserContactRequest): Promise<ContactDetail> {
+    const validated = Validation.validate(UserValidation.CONTACT_UPDATE, request);
+
+    const existing = await prismaClient.contact.findFirst({
+      where: {
+        id: contactId,
+        username: username,
+      },
+    });
+
+    if (!existing) {
+      throw new ResponseError(404, "Contact not found");
+    }
+
+    const updated = await prismaClient.contact.update({
+      where: { id: contactId },
+      data: {
+        first_name: validated.first_name ?? existing.first_name,
+        last_name: validated.last_name ?? existing.last_name,
+        email: validated.email !== undefined ? validated.email || null : existing.email,
+        phone: validated.phone !== undefined ? validated.phone || null : existing.phone,
+      },
+      include: {
+        addresses: true,
+      },
+    });
+
+    return {
+      id: updated.id,
+      first_name: updated.first_name,
+      last_name: updated.last_name,
+      email: updated.email,
+      phone: updated.phone,
+      username: updated.username,
+      addresses: updated.addresses.map((a) => ({
+        id: a.id,
+        street: a.street,
+        city: a.city,
+        province: a.province,
+        country: a.country,
+        postal_code: a.postal_code,
+        contact_id: a.contact_id,
+      })),
+    };
+  }
+
+  static async deleteContact(username: string, contactId: number): Promise<void> {
+    const existing = await prismaClient.contact.findFirst({
+      where: {
+        id: contactId,
+        username: username,
+      },
+    });
+
+    if (!existing) {
+      throw new ResponseError(404, "Contact not found");
+    }
+
+    await prismaClient.$transaction([
+      prismaClient.address.deleteMany({ where: { contact_id: contactId } }),
+      prismaClient.contact.delete({ where: { id: contactId } }),
+    ]);
+  }
+
+  static async createAddress(username: string, contactId: number, request: CreateUserAddressRequest): Promise<AddressDetail> {
+    const validated = Validation.validate(UserValidation.ADDRESS_CREATE, request);
+
+    const contact = await prismaClient.contact.findFirst({
+      where: {
+        id: contactId,
+        username: username,
+      },
+    });
+
+    if (!contact) {
+      throw new ResponseError(404, "Contact not found");
+    }
+
+    const address = await prismaClient.address.create({
+      data: {
+        contact_id: contactId,
+        street: validated.street || null,
+        city: validated.city,
+        province: validated.province,
+        country: validated.country || null,
+        postal_code: validated.postal_code || null,
+      },
+    });
+
+    return {
+      id: address.id,
+      street: address.street,
+      city: address.city,
+      province: address.province,
+      country: address.country,
+      postal_code: address.postal_code,
+      contact_id: address.contact_id,
+    };
+  }
+
+  static async updateAddress(username: string, contactId: number, addressId: number, request: UpdateUserAddressRequest): Promise<AddressDetail> {
+    const validated = Validation.validate(UserValidation.ADDRESS_UPDATE, request);
+
+    const contact = await prismaClient.contact.findFirst({
+      where: {
+        id: contactId,
+        username: username,
+      },
+    });
+
+    if (!contact) {
+      throw new ResponseError(404, "Contact not found");
+    }
+
+    const existingAddress = await prismaClient.address.findFirst({
+      where: {
+        id: addressId,
+        contact_id: contactId,
+      },
+    });
+
+    if (!existingAddress) {
+      throw new ResponseError(404, "Address not found");
+    }
+
+    const updated = await prismaClient.address.update({
+      where: { id: addressId },
+      data: {
+        street: validated.street !== undefined ? validated.street || null : existingAddress.street,
+        city: validated.city ?? existingAddress.city,
+        province: validated.province ?? existingAddress.province,
+        country: validated.country !== undefined ? validated.country || null : existingAddress.country,
+        postal_code: validated.postal_code !== undefined ? validated.postal_code || null : existingAddress.postal_code,
+      },
+    });
+
+    return {
+      id: updated.id,
+      street: updated.street,
+      city: updated.city,
+      province: updated.province,
+      country: updated.country,
+      postal_code: updated.postal_code,
+      contact_id: updated.contact_id,
+    };
+  }
+
+  static async deleteAddress(username: string, contactId: number, addressId: number): Promise<void> {
+    const contact = await prismaClient.contact.findFirst({
+      where: {
+        id: contactId,
+        username: username,
+      },
+    });
+
+    if (!contact) {
+      throw new ResponseError(404, "Contact not found");
+    }
+
+    const existingAddress = await prismaClient.address.findFirst({
+      where: {
+        id: addressId,
+        contact_id: contactId,
+      },
+    });
+
+    if (!existingAddress) {
+      throw new ResponseError(404, "Address not found");
+    }
+
+    await prismaClient.address.delete({
+      where: { id: addressId },
+    });
   }
 }

@@ -65,5 +65,40 @@ class UserValidation {
         })
             .optional(),
     });
+    static CONTACT_CREATE = zod_1.z.object({
+        first_name: zod_1.z.string().trim().min(1, "First name is required").max(100),
+        last_name: zod_1.z.string().trim().min(1, "Last name is required").max(100),
+        email: zod_1.z.string().trim().email("Invalid email").optional().nullable().or(zod_1.z.literal("")),
+        phone: zod_1.z.string().trim().max(20).optional().nullable().or(zod_1.z.literal("")),
+        address: zod_1.z
+            .object({
+            street: zod_1.z.string().trim().max(255).optional().nullable().or(zod_1.z.literal("")),
+            city: zod_1.z.string().trim().min(1, "City is required").max(100),
+            province: zod_1.z.string().trim().min(1, "Province is required").max(100),
+            country: zod_1.z.string().trim().max(100).optional().nullable().or(zod_1.z.literal("")),
+            postal_code: zod_1.z.string().trim().max(10).optional().nullable().or(zod_1.z.literal("")),
+        })
+            .optional(),
+    });
+    static CONTACT_UPDATE = zod_1.z.object({
+        first_name: zod_1.z.string().trim().min(1, "First name is required").max(100).optional(),
+        last_name: zod_1.z.string().trim().min(1, "Last name is required").max(100).optional(),
+        email: zod_1.z.string().trim().email("Invalid email").optional().nullable().or(zod_1.z.literal("")),
+        phone: zod_1.z.string().trim().max(20).optional().nullable().or(zod_1.z.literal("")),
+    });
+    static ADDRESS_CREATE = zod_1.z.object({
+        street: zod_1.z.string().trim().max(255).optional().nullable().or(zod_1.z.literal("")),
+        city: zod_1.z.string().trim().min(1, "City is required").max(100),
+        province: zod_1.z.string().trim().min(1, "Province is required").max(100),
+        country: zod_1.z.string().trim().max(100).optional().nullable().or(zod_1.z.literal("")),
+        postal_code: zod_1.z.string().trim().max(10).optional().nullable().or(zod_1.z.literal("")),
+    });
+    static ADDRESS_UPDATE = zod_1.z.object({
+        street: zod_1.z.string().trim().max(255).optional().nullable().or(zod_1.z.literal("")),
+        city: zod_1.z.string().trim().min(1, "City is required").max(100).optional(),
+        province: zod_1.z.string().trim().min(1, "Province is required").max(100).optional(),
+        country: zod_1.z.string().trim().max(100).optional().nullable().or(zod_1.z.literal("")),
+        postal_code: zod_1.z.string().trim().max(10).optional().nullable().or(zod_1.z.literal("")),
+    });
 }
 exports.UserValidation = UserValidation;
