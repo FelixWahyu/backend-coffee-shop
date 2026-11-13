@@ -1,7 +1,7 @@
 import type { Response, NextFunction } from "express";
-import type { UserRequest } from "../type/userRequest";
-import type { CreateAddressRequest, GetAddressRequest, RemoveAddressRequest, UpdateAddressRequest } from "../model/addressModel";
-import { AddressService } from "../services/addressService";
+import type { UserRequest } from "../../type/userRequest";
+import type { CreateAddressRequest, GetAddressRequest, RemoveAddressRequest, UpdateAddressRequest } from "./address.model";
+import { AddressService } from "./address.service";
 import { number } from "zod";
 
 export class AddressController {

@@ -3,7 +3,7 @@ import { authMiddleware } from "../middleware/authMiddleware";
 // import { UserController } from "../features/user/user.controller";
 import routerUsers from "../features/user/user.route";
 // import { ContactController } from "../features/contact/contact.controller";
-import { AddressController } from "../controllers/addressController";
+// import { AddressController } from "../features/address/address.controller";
 // import { CategoryController } from "../categories/controllers/category.controller";
 import routerCategory from "../features/categories/category.route";
 import routerBlog from "../features/blog/blog.route";
@@ -17,6 +17,7 @@ import { adminMiddleware } from "../middleware/adminMiddleware";
 // import { UploadImageController } from "../features/uploads/upload.controller";
 import routerUpload from "../features/uploads/upload.route";
 import routerContact from "../features/contact/contact.route";
+import routerAddress from "../features/address/address.route";
 
 export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
@@ -37,11 +38,12 @@ apiRouter.use("/api", routerUsers);
 apiRouter.use("/api", routerContact);
 
 // Address API
-apiRouter.post("/api/contacts/:contactId/addresses", AddressController.create);
-apiRouter.get("/api/contacts/:contactId/addresses/:addressId", AddressController.get);
-apiRouter.put("/api/contacts/:contactId/addresses/:addressId", AddressController.update);
-apiRouter.delete("/api/contacts/:contactId/addresses/:addressId", AddressController.delete);
-apiRouter.get("/api/contacts/:contactId/addresses", AddressController.list);
+// apiRouter.post("/api/contacts/:contactId/addresses", AddressController.create);
+// apiRouter.get("/api/contacts/:contactId/addresses/:addressId", AddressController.get);
+// apiRouter.put("/api/contacts/:contactId/addresses/:addressId", AddressController.update);
+// apiRouter.delete("/api/contacts/:contactId/addresses/:addressId", AddressController.delete);
+// apiRouter.get("/api/contacts/:contactId/addresses", AddressController.list);
+apiRouter.use("/api", routerAddress);
 
 // Category API
 // apiRouter.post("/api/categories", adminMiddleware, CategoryController.create);

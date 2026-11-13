@@ -1,10 +1,10 @@
 import type { Address, User } from "@prisma/client";
-import { toAddressResponse, type AddressResponse, type CreateAddressRequest, type GetAddressRequest, type RemoveAddressRequest, type UpdateAddressRequest } from "../model/addressModel";
-import { Validation } from "../validation/validation";
-import { AddressValidation } from "../validation/addressValidation";
-import { prismaClient } from "../application/database";
-import { ContactService } from "../features/contact/contact.service";
-import { ResponseError } from "../error/responseError";
+import { toAddressResponse, type AddressResponse, type CreateAddressRequest, type GetAddressRequest, type RemoveAddressRequest, type UpdateAddressRequest } from "./address.model";
+import { Validation } from "../../validation/validation";
+import { AddressValidation } from "./address.validation";
+import { prismaClient } from "../../application/database";
+import { ContactService } from "../contact/contact.service";
+import { ResponseError } from "../../error/responseError";
 import { th } from "zod/v4/locales";
 
 export class AddressService {

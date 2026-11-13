@@ -9,7 +9,7 @@ const authMiddleware_1 = require("../middleware/authMiddleware");
 // import { UserController } from "../features/user/user.controller";
 const user_route_1 = __importDefault(require("../features/user/user.route"));
 // import { ContactController } from "../features/contact/contact.controller";
-const addressController_1 = require("../controllers/addressController");
+// import { AddressController } from "../features/address/address.controller";
 // import { CategoryController } from "../categories/controllers/category.controller";
 const category_route_1 = __importDefault(require("../features/categories/category.route"));
 const blog_route_1 = __importDefault(require("../features/blog/blog.route"));
@@ -23,6 +23,7 @@ const adminMiddleware_1 = require("../middleware/adminMiddleware");
 // import { UploadImageController } from "../features/uploads/upload.controller";
 const upload_route_1 = __importDefault(require("../features/uploads/upload.route"));
 const contact_route_1 = __importDefault(require("../features/contact/contact.route"));
+const address_route_1 = __importDefault(require("../features/address/address.route"));
 exports.apiRouter = express_1.default.Router();
 exports.apiRouter.use(authMiddleware_1.authMiddleware);
 // User API
@@ -39,11 +40,12 @@ exports.apiRouter.use("/api", user_route_1.default);
 // apiRouter.get("/api/contacts", ContactController.search);
 exports.apiRouter.use("/api", contact_route_1.default);
 // Address API
-exports.apiRouter.post("/api/contacts/:contactId/addresses", addressController_1.AddressController.create);
-exports.apiRouter.get("/api/contacts/:contactId/addresses/:addressId", addressController_1.AddressController.get);
-exports.apiRouter.put("/api/contacts/:contactId/addresses/:addressId", addressController_1.AddressController.update);
-exports.apiRouter.delete("/api/contacts/:contactId/addresses/:addressId", addressController_1.AddressController.delete);
-exports.apiRouter.get("/api/contacts/:contactId/addresses", addressController_1.AddressController.list);
+// apiRouter.post("/api/contacts/:contactId/addresses", AddressController.create);
+// apiRouter.get("/api/contacts/:contactId/addresses/:addressId", AddressController.get);
+// apiRouter.put("/api/contacts/:contactId/addresses/:addressId", AddressController.update);
+// apiRouter.delete("/api/contacts/:contactId/addresses/:addressId", AddressController.delete);
+// apiRouter.get("/api/contacts/:contactId/addresses", AddressController.list);
+exports.apiRouter.use("/api", address_route_1.default);
 // Category API
 // apiRouter.post("/api/categories", adminMiddleware, CategoryController.create);
 // apiRouter.get("/api/categories", CategoryController.list);
