@@ -8,11 +8,13 @@ class StatsService {
         const categoriesCount = await database_1.prismaClient.category.count();
         const usersCount = await database_1.prismaClient.user.count();
         const blogsCount = await database_1.prismaClient.blogArticle.count();
+        const reviewsCount = await database_1.prismaClient.review.count();
         return {
             products: productsCount,
             categories: categoriesCount,
             users: usersCount,
             blogs: blogsCount,
+            reviews: reviewsCount,
         };
     }
 }

@@ -34,8 +34,28 @@ export class ReviewService {
     return toReviewResponse(review);
   }
 
-  static async getAllReview(): Promise<Array<ReviewResponse>> {
-    const reviews = await prismaClient.review.findMany({
+  static async getAllReview(
+    search?: string,
+    page?: number,
+    size: number = 10,
+    rating?: number
+  ): Promise<{ data: Array<ReviewResponse>; paging?: { size: number; total_page: number; current_page: number; total_item: number } }> {
+    const where: any = {};
+
+    if (search) {
+      where.OR = [
+        { comment: { contains: search } },
+        { username: { contains: search } },
+        { user: { name: { contains: search } } },
+      ];
+    }
+
+    if (rating !== undefined && !isNaN(rating) && rating > 0) {
+      where.rating = rating;
+    }
+
+    const queryOptions: any = {
+      where,
       include: {
         user: {
           select: {
@@ -52,9 +72,31 @@ export class ReviewService {
       orderBy: {
         createdAt: "desc",
       },
-    });
+    };
 
-    return reviews.map((review) => toReviewResponse(review));
+    if (page !== undefined) {
+      queryOptions.skip = (page - 1) * size;
+      queryOptions.take = size;
+    }
+
+    const reviews = await prismaClient.review.findMany(queryOptions);
+
+    if (page !== undefined) {
+      const total = await prismaClient.review.count({ where });
+      return {
+        data: reviews.map((review) => toReviewResponse(review)),
+        paging: {
+          size,
+          total_page: Math.ceil(total / size),
+          current_page: page,
+          total_item: total,
+        },
+      };
+    }
+
+    return {
+      data: reviews.map((review) => toReviewResponse(review)),
+    };
   }
 
   static async delete(user: User, id: number): Promise<void> {

@@ -31,8 +31,20 @@ class ReviewService {
         });
         return (0, review_model_1.toReviewResponse)(review);
     }
-    static async getAllReview() {
-        const reviews = await database_1.prismaClient.review.findMany({
+    static async getAllReview(search, page, size = 10, rating) {
+        const where = {};
+        if (search) {
+            where.OR = [
+                { comment: { contains: search } },
+                { username: { contains: search } },
+                { user: { name: { contains: search } } },
+            ];
+        }
+        if (rating !== undefined && !isNaN(rating) && rating > 0) {
+            where.rating = rating;
+        }
+        const queryOptions = {
+            where,
             include: {
                 user: {
                     select: {
@@ -49,8 +61,27 @@ class ReviewService {
             orderBy: {
                 createdAt: "desc",
             },
-        });
-        return reviews.map((review) => (0, review_model_1.toReviewResponse)(review));
+        };
+        if (page !== undefined) {
+            queryOptions.skip = (page - 1) * size;
+            queryOptions.take = size;
+        }
+        const reviews = await database_1.prismaClient.review.findMany(queryOptions);
+        if (page !== undefined) {
+            const total = await database_1.prismaClient.review.count({ where });
+            return {
+                data: reviews.map((review) => (0, review_model_1.toReviewResponse)(review)),
+                paging: {
+                    size,
+                    total_page: Math.ceil(total / size),
+                    current_page: page,
+                    total_item: total,
+                },
+            };
+        }
+        return {
+            data: reviews.map((review) => (0, review_model_1.toReviewResponse)(review)),
+        };
     }
     static async delete(user, id) {
         const review = await database_1.prismaClient.review.findUnique({

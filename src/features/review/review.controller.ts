@@ -23,11 +23,17 @@ export class ReviewController {
 
   static async getAllReview(req: Request, res: Response, next: NextFunction) {
     try {
-      const response = await ReviewService.getAllReview();
+      const search = req.query.search ? String(req.query.search) : undefined;
+      const page = req.query.page ? Number(req.query.page) : undefined;
+      const size = req.query.size ? Number(req.query.size) : 10;
+      const rating = req.query.rating ? Number(req.query.rating) : undefined;
+
+      const response = await ReviewService.getAllReview(search, page, size, rating);
       res.status(200).json({
         success: true,
         message: "Success get all review",
-        data: response,
+        data: response.data,
+        paging: response.paging,
       });
     } catch (error) {
       next(error);
