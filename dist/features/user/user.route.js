@@ -11,6 +11,14 @@ routerUsers.get("/users/current", user_controller_1.UserController.get);
 routerUsers.patch("/users/current", user_controller_1.UserController.update);
 routerUsers.delete("/users/logout", user_controller_1.UserController.logout);
 routerUsers.delete("/users/current/:username", user_controller_1.UserController.delete);
+// Current User Contacts
+routerUsers.post("/users/current/contacts", user_controller_1.UserController.createMyContact);
+routerUsers.put("/users/current/contacts/:contactId", user_controller_1.UserController.updateMyContact);
+routerUsers.delete("/users/current/contacts/:contactId", user_controller_1.UserController.deleteMyContact);
+// Current User Contact Addresses
+routerUsers.post("/users/current/contacts/:contactId/addresses", user_controller_1.UserController.createMyAddress);
+routerUsers.put("/users/current/contacts/:contactId/addresses/:addressId", user_controller_1.UserController.updateMyAddress);
+routerUsers.delete("/users/current/contacts/:contactId/addresses/:addressId", user_controller_1.UserController.deleteMyAddress);
 routerUsers.get("/admin/users", adminMiddleware_1.adminMiddleware, user_controller_1.UserController.adminList);
 routerUsers.get("/admin/users/:username", adminMiddleware_1.adminMiddleware, user_controller_1.UserController.adminGet);
 routerUsers.post("/admin/users", adminMiddleware_1.adminMiddleware, user_controller_1.UserController.adminCreate);

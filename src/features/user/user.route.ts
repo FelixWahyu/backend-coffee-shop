@@ -9,6 +9,16 @@ routerUsers.patch("/users/current", UserController.update);
 routerUsers.delete("/users/logout", UserController.logout);
 routerUsers.delete("/users/current/:username", UserController.delete);
 
+// Current User Contacts
+routerUsers.post("/users/current/contacts", UserController.createMyContact);
+routerUsers.put("/users/current/contacts/:contactId", UserController.updateMyContact);
+routerUsers.delete("/users/current/contacts/:contactId", UserController.deleteMyContact);
+
+// Current User Contact Addresses
+routerUsers.post("/users/current/contacts/:contactId/addresses", UserController.createMyAddress);
+routerUsers.put("/users/current/contacts/:contactId/addresses/:addressId", UserController.updateMyAddress);
+routerUsers.delete("/users/current/contacts/:contactId/addresses/:addressId", UserController.deleteMyAddress);
+
 routerUsers.get("/admin/users", adminMiddleware, UserController.adminList);
 routerUsers.get("/admin/users/:username", adminMiddleware, UserController.adminGet);
 routerUsers.post("/admin/users", adminMiddleware, UserController.adminCreate);

@@ -36,7 +36,7 @@ export class UserController {
 
   static async get(req: UserRequest, res: Response, next: NextFunction) {
     try {
-      const response = await UserService.get(req.user!);
+      const response = await UserService.getByUsername(req.user!.username);
       res.status(200).json({ data: response });
     } catch (error) {
       next(error);
@@ -228,6 +228,89 @@ export class UserController {
       const contactId = Number(req.params.contactId);
       const addressId = Number(req.params.addressId);
       await UserService.deleteAddress(username, contactId, addressId);
+      res.status(200).json({
+        success: true,
+        message: "Address deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async createMyContact(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const response = await UserService.createContact(req.user!.username, req.body);
+      res.status(201).json({
+        success: true,
+        message: "Contact created successfully",
+        data: response,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateMyContact(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const contactId = Number(req.params.contactId);
+      const response = await UserService.updateContact(req.user!.username, contactId, req.body);
+      res.status(200).json({
+        success: true,
+        message: "Contact updated successfully",
+        data: response,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async deleteMyContact(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const contactId = Number(req.params.contactId);
+      await UserService.deleteContact(req.user!.username, contactId);
+      res.status(200).json({
+        success: true,
+        message: "Contact deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async createMyAddress(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const contactId = Number(req.params.contactId);
+      const response = await UserService.createAddress(req.user!.username, contactId, req.body);
+      res.status(201).json({
+        success: true,
+        message: "Address created successfully",
+        data: response,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateMyAddress(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const contactId = Number(req.params.contactId);
+      const addressId = Number(req.params.addressId);
+      const response = await UserService.updateAddress(req.user!.username, contactId, addressId, req.body);
+      res.status(200).json({
+        success: true,
+        message: "Address updated successfully",
+        data: response,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async deleteMyAddress(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const contactId = Number(req.params.contactId);
+      const addressId = Number(req.params.addressId);
+      await UserService.deleteAddress(req.user!.username, contactId, addressId);
       res.status(200).json({
         success: true,
         message: "Address deleted successfully",
